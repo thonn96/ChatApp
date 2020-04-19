@@ -22,7 +22,7 @@ import android.widget.Toast;
 public class SingUpActivity extends AppCompatActivity {
 
     Button btnSingUp, btnCancel;
-    EditText edtUser,edtPassword;
+    EditText edtUser,edtPassword,edtFullName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class SingUpActivity extends AppCompatActivity {
         btnCancel = (Button)findViewById(R.id.singUp_btnCancel);
         edtUser = (EditText)findViewById(R.id.singup_edtLogin);
         edtPassword = (EditText)findViewById(R.id.singup_edtPassword);
+        edtFullName = (EditText)findViewById(R.id.singup_edtFullName);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +52,7 @@ public class SingUpActivity extends AppCompatActivity {
                 String user = edtUser.getText().toString();
                 String password = edtPassword.getText().toString();
                 QBUser qbUser = new QBUser(user,password);
+                qbUser.setFullName(edtFullName.getText().toString());
 
                 QBUsers.signUp(qbUser).performAsync(new QBEntityCallback<QBUser>() {
                     @Override

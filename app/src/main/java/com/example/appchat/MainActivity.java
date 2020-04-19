@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.session.BaseService;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initalizeFramwork();
+//        initalizeFramwork();
 
         btn_Login = (Button)findViewById(R.id.main_btnLogin);
         btn_singUp = (Button)findViewById(R.id.main_btnSignUp);
@@ -46,19 +48,23 @@ public class MainActivity extends AppCompatActivity {
         btn_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user = edtUser.getText().toString();
-                String password = edtPassword.getText().toString();
+                final String user = edtUser.getText().toString();
+                final String password = edtPassword.getText().toString();
                 QBUser qbUser = new QBUser(user,password);
 
                 QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
                     @Override
                     public void onSuccess(QBUser qbUser, Bundle bundle) {
                         Toast.makeText(getBaseContext(),"login Success",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this,ChatDialogsActivity.class);
+                        intent.putExtra("user",user);
+                        intent.putExtra("password",password);
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onError(QBResponseException e) {
-
+                        Toast.makeText(getBaseContext(),""+e.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
 
